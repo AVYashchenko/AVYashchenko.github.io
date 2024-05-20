@@ -1,1 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Matrix Movie Effect</title>
+</head>
+<body style="background-color: black;">
+
+
+<!-- Использование HTML5 canvas для эффекта Матрицы -->
+<canvas id="matrix" style="position: absolute; top: 0; left: 0;"></canvas>
+<script>
+  // Получаем элемент canvas
+  var canvas = document.getElementById('matrix');
+  var ctx = canvas.getContext('2d');
+  
+  // Устанавливаем размер canvas таким образом, чтобы он покрывал всё окно
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+  
+  // Символы, которые будут использоваться в эффекте Матрицы
+  var matrixChars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ123456789@#$%^&*()";
+  matrixChars = matrixChars.split('');
+  
+  // Установка столбцов
+  var columns = canvas.width / 15;
+  // Массив для хранения координаты Y каждого символа
+  var drops = [];
+  for (var x = 0; x < columns; x++)
+    drops[x] = Math.floor(Math.random() * canvas.height);
+  
+  // Функция для отрисовки эффекта Матрицы
+  function draw() {
+    // Чёрный фон
+    ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    
+    // Зелёные символы
+    ctx.fillStyle = '#0F0'; // Зелёный цвет
+    ctx.font = '15px Courier New';
+    
+    // Проходим по каждому столбцу
+    for (var i = 0; i < drops.length; i++) {
+      // Выбираем случайный символ
+      var text = matrixChars[Math.floor(Math.random() * matrixChars.length)];
+      // Рисуем символ
+      ctx.fillText(text, i * 15, drops[i] * 15);
+      
+      // Если символ достиг нижнего края, сбрасываем его позицию
+      if (drops[i] * 15 > canvas.height && Math.random() > 0.975)
+        drops[i] = 0;
+      
+      // Перемещаем символ вниз
+      drops[i]++;
+    }
+  }
+  
+  // Перерисовываем эффект Матрицы каждые 50 миллисекунд
+  setInterval(draw, 50);
+</script>
+</body>
+</html>
 
